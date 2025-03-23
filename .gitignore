@@ -1,0 +1,10 @@
+.venv/
+dataset/
+models/__pycache__
+models/test.py
+models/train.py
+models/training_utils.py
+models/Video-Auto-Clipper-Base.pt
+models/VideoAutoClipper.pt
+models/mfcc_scaler.joblib
+output.log

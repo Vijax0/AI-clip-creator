@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AI Clip Creator</title>
+        <link rel="stylesheet" href="../static/style.css">
+    </head>
+    <body>
+        <div id="settings-menu">
+            <form method="post" id="config-form" action="get-config">
+                <div>
+                    <label title="Enables GPU usage for faster processing. Requires an NVIDIA GPU.">Use GPU</label>
+                    <input type="checkbox" id="use-gpu" name="use-gpu" {% if config.use_gpu %}checked{% endif %}>
+                </div>
+    
+                <div>
+                    <label title="If enabled, automatically loads the model on startup.">Auto load model</label>
+                    <input type="checkbox" id="auto-load-model" name="auto-load-model" {% if config.auto_load_model %}checked{% endif %}>
+                </div>
+
+                <hr>
+    
+                <div class="value-container">
+                    <div>
+                        <label title="The length of each video segment in seconds. Lower values use less RAM; higher values process faster. Extremely low values may reduce output quality.">Segment length</label>
+                        <input type="number" id="segment-length-number" name="segment-length" min="60" max="3600" value="{{ config.segment_length }}">
+                    </div>
+                    <input type="range" id="segment-length-range" name="segment-length" min="60" max="3600" value="{{ config.segment_length }}">
+                </div>
+    
+                <div class="value-container">
+                    <div>
+                        <label title="The minimum length of the clip in seconds.">Minimum clip length</label>
+                        <input type="number" id="minimum-clip-length-number" name="minimum-clip-length" min="1" max="180" value="{{ config.minimum_clip_length }}">
+                    </div>
+                    <input type="range" id="minimum-clip-length-range" name="minimum-clip-length" min="1" max="180" value="{{ config.minimum_clip_length }}">
+                </div>
+    
+                <div class="value-container">
+                    <div>
+                        <label title="The maximum length of the clip in seconds.">Maximum clip length</label>
+                        <input type="number" id="maximum-clip-length-number" name="maximum-clip-length" min="1" max="180" value="{{ config.maximum_clip_length }}">
+                    </div>
+                    <input type="range" id="maximum-clip-length-range" name="maximum-clip-length" min="1" max="180" value="{{ config.maximum_clip_length }}">
+                </div>
+    
+                <div class="value-container">
+                    <div>
+                        <label title="The number of clips to return.">Number of clips</label>
+                        <input type="number" id="number-of-clips-number" name="number-of-clips" min="1" max="20" value="{{ config.number_of_clips }}">
+                    </div>
+                    <input type="range" id="number-of-clips-range" name="number-of-clips" min="1" max="20" value="{{ config.number_of_clips }}">
+                </div>
+
+                <div class="value-container">
+                    <div>
+                        <label title="The model's decision threshold. Lower this value if no clips are being returned. Very low values will result in low quality clips.">Threshold</label>
+                        <input type="number" id="threshold-number" name="threshold" min="0" max="1" step="0.01" value="{{ config.threshold }}">
+                    </div>
+                    <input type="range" id="threshold-range" name="threshold" min="0" max="1" step="0.01" value="{{ config.threshold }}">
+                </div>
+    
+                <button type="button" id="save-settings">Save Settings</button>
+            </form>
+        </div>
+
+        <div class="image-container">
+            <img src="/static/images/folder-outline.png" class="default-image">
+            <img src="/static/images/folder-open-outline.png" class="hover-image" id="clips-folder-button">
+        </div>
+
+        <div class="main-content">
+            <div id="video-upload">
+                <h1>AI Clip Creator</h1>
+                <p>Upload Video</p>
+                <form method="post" enctype="multipart/form-data">
+                    <input type="file" name="video" accept="video/*">
+                    <input type="submit" id="video-upload-button" value="Upload">
+                </form>
+            </div>
+    
+            <div id="clip-container">
+                {% if clips %}
+                    {% for clip in clips %}
+                        <video controls>
+                            <source src="{{ url_for('static', filename=clip) }}" type="video/mp4">
+                        </video>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <script src="/static/index.js"></script>
+    </body>
+</html>
