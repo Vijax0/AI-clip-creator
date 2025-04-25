@@ -22,6 +22,12 @@ A tool created specifically for streamers, content creators, video producers, or
 4. Launch the application with `run.bat` or `run.sh`.
 5. Access the front end with `http://localhost:5000`.
 
+**Note:** The MacOS installer has not been fully tested and may not work as intended.
+
+## Contributing
+
+Contributions of all kinds, including bug fixes, opening issues, feature requests, and code contributions are all welcome and appreciated. If you encounter any issues or have any feedback, do not be afraid to open an issue or submit a pull request.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
