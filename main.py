@@ -20,6 +20,8 @@ class Config:
             "segment_length": 600,
             "minimum_clip_length": 5,
             "maximum_clip_length": 30,
+            "pad_clip_start": 1.0,
+            "pad_clip_end": 1.0,
             "number_of_clips": 2,
             "threshold": 0.7
         }
@@ -37,6 +39,8 @@ class Config:
 
         self.minimum_clip_length = config.get("minimum_clip_length", 5)
         self.maximum_clip_length = config.get("maximum_clip_length", 30)
+        self.pad_clip_start = config.get("pad_clip_start", 1.0)
+        self.pad_clip_end = config.get("pad_clip_end", 1.0)
         self.number_of_clips = config.get("number_of_clips", 2)
 
         self.threshold = config.get("threshold", 0.7)
@@ -91,7 +95,7 @@ def main():
                     print("Creating clips...")
 
                     clip_timestamps = find_clips(predictions, sr, config.minimum_clip_length, config.maximum_clip_length, config.number_of_clips)
-                    clip_paths = create_clips(video_path, clip_timestamps, clip_folder)
+                    clip_paths = create_clips(video_path, clip_timestamps, clip_folder, config.pad_clip_start, config.pad_clip_end)
                     clip_urls = [os.path.relpath(clip_path, static_folder).replace("\\", "/") for clip_path in clip_paths]
 
                     print("Done!")
@@ -121,14 +125,16 @@ def get_config():
 
         config.minimum_clip_length = int(request.form.get("minimum-clip-length"))
         config.maximum_clip_length = int(request.form.get("maximum-clip-length"))
+        config.pad_clip_start = float(request.form.get("pad-clip-start"))
+        config.pad_clip_end = float(request.form.get("pad-clip-end"))
         config.number_of_clips = int(request.form.get("number-of-clips"))
 
         config.threshold = float(request.form.get("threshold"))
         if previous_device != config.use_gpu and model:
             model = load_model(VideoAutoClipper(), model_path, device=config.get_device())
 
-    except ValueError:
-        print("Error!")
+    except ValueError as e:
+        print(e)
     finally:
         return jsonify({"status": "success", "message": "Settings succesfully updated"})
 

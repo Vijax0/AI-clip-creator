@@ -103,7 +103,7 @@ def find_clips(predictions, sr, minimum_length, maximum_length, number_of_clips)
     return clips
 
 
-def create_clips(video_file, clip_timestamps, output_dir):
+def create_clips(video_file, clip_timestamps, output_dir, pad_clip_start, pad_clip_end):
     os.makedirs(output_dir, exist_ok=True)
     clip_paths = []
 
@@ -112,6 +112,9 @@ def create_clips(video_file, clip_timestamps, output_dir):
 
     try:
         for start_time, end_time in clip_timestamps:
+            start_time = max(0, (start_time - pad_clip_start))
+            end_time = min(video.duration, (end_time + pad_clip_end))
+
             subclip = video.subclip(start_time, end_time)
             output_path = os.path.join(output_dir, f"{clip_number}.mp4")
             subclip.write_videofile(output_path, codec="libx264", audio_codec="aac", fps=None, audio_fps=None, logger=None, temp_audiofile=None)
