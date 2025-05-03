@@ -57,6 +57,32 @@ body {
     background-color: #357ABD
 }
 
+#loading-bar {
+    width: 400px;
+    height: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0.5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+#loading-bar-fill {
+    width: 100%;
+    height: 100%;
+    background-color: #4CAF50;
+    animation: loading-bar-animation 2s infinite linear;
+}
+
+@keyframes loading-bar-animation {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 #clip-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

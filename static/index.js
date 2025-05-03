@@ -100,3 +100,47 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const uploadForm = document.querySelector("#video-upload form");
+    const loadingBar = document.getElementById("loading-bar");
+
+    loadingBar.style.display = "none";
+
+    if (uploadForm) {
+        uploadForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const fileInput = this.querySelector('input[type="file"]');
+            if (fileInput.files.length === 0) {
+                return;
+            }
+
+            loadingBar.style.display = "block";
+
+            const formData = new FormData(this);
+
+            fetch("/", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(html => {
+
+                loadingBar.style.display = "none";
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+                
+                const newClipContainer = doc.getElementById("clip-container");
+                if (newClipContainer) {
+                    document.getElementById("clip-container").innerHTML = newClipContainer.innerHTML;
+                }
+            })
+            .catch(error => {
+                loadingBar.style.display = "none";
+                console.error("Error uploading video:", error);
+            });
+        });
+    }
+});
