@@ -60,7 +60,7 @@ def process_video(video_file, segment_length, output_dir):
 
 def make_prediction(model, scaler, video_path, threshold=0.5, device="cpu"):
     audio, sr = librosa.load(video_path, sr=None, mono=True)
-    mfcc = librosa.feature.mfcc(y=audio, sr=sr, n_mfcc=40, n_fft=8192, hop_length=2048)
+    mfcc = librosa.feature.mfcc(y=audio, sr=sr, n_mfcc=40, n_fft=4096, hop_length=2048)
 
     mfcc = torch.Tensor(scaler.transform(mfcc.T).transpose(-1, 0)).unsqueeze(0)
     mfcc = mfcc.to(device)
