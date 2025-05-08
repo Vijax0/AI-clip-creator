@@ -66,6 +66,8 @@ def make_prediction(model, scaler, video_path, threshold=0.5, device="cpu"):
     mfcc = mfcc.to(device)
 
     with torch.no_grad():
+        if device != "cpu":
+            mfcc = mfcc.half()
         predictions = torch.sigmoid(model(mfcc)).squeeze().detach().cpu().numpy()
 
     predictions = (predictions >= threshold).astype(int)

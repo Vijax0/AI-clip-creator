@@ -5,6 +5,9 @@ import torch
 def load_model(model, weights_path, device="cpu"):
     model.load_state_dict(torch.load(weights_path))
     model.to(device)
+    if device != "cpu":
+        model.half()
+
     model.eval()
     return model
 
