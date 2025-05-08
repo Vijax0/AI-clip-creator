@@ -18,8 +18,8 @@ A tool created specifically for streamers, content creators, video producers, or
 
 1. Download the release for your OS.
 2. Extract the contents of the zip file.
-3. Run `installer.bat` or `installer.sh` according to your OS.
-4. Launch the application with `run.bat` or `run.sh`.
+3. Run the `install` file according to your OS.
+4. Launch the application with the `run` file.
 5. Access the front end with `http://localhost:5000`.
 
 **Note:** The MacOS installer has not been fully tested and may not work as intended.
